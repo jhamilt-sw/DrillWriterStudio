@@ -1,0 +1,38 @@
+DrillWriter Studio
+Copyright 2026 Jasper Hamilton
+
+Author: Jasper Hamilton
+Created: 21 August 2026
+
+AI assistance: Portions of this code and its documentation were generated or
+refined using AI tools under human direction.
+
+Attribution
+-----------
+
+Crediting Jasper Hamilton as the original author of this software in derivative
+or redistributed works is appreciated.
+
+This is a courtesy request rather than a licensing term. The software is
+distributed under the Apache License 2.0, and the terms of that license
+constitute the complete set of obligations governing its use. Those terms
+already require that the copyright notice and this NOTICE file accompany any
+copy or derivative work, and that modified files carry prominent notices of the
+changes made. Nothing in this section extends or modifies the license: a
+project imposing conditions beyond it would no longer be Apache-2.0 licensed,
+and could not be safely relied upon by others.
+
+This product includes software developed by third parties. A complete list of
+those dependencies, their licenses, and links to their sources is maintained in
+THIRD_PARTY_LICENSES.md at the root of this repository.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.

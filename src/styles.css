@@ -1,0 +1,1527 @@
+/*
+ * DrillWriter Studio
+ * Author: Jasper Hamilton
+ * AI assistance: Portions of this code and its documentation were generated
+ *   or refined using AI tools under human direction.
+ * Attribution: Credit to the original author in derivative works is
+ *   appreciated as a courtesy. It is not required by the license; see NOTICE.
+ * Created: 2026-08-21  ·  Last modified: 2026-08-22
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
+ * DrillWriter Studio — application styling.
+ *
+ * One stylesheet, custom-property driven, light and dark. Contrast ratios for
+ * text and interactive borders are kept at or above WCAG AA (NFR-3), and no
+ * state is signalled by colour alone: selection also changes outline weight,
+ * warnings also carry an icon and text.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #f4f5f7;
+  --bg-panel: #ffffff;
+  --bg-raised: #fbfbfc;
+  --bg-sunken: #eceef1;
+  --bg-canvas: #e8ebee;
+
+  --fg: #16191d;
+  --fg-muted: #5a626d;
+  --fg-faint: #838b96;
+
+  --border: #d3d7dd;
+  --border-strong: #b3b9c2;
+
+  --accent: #1f6feb;
+  --accent-fg: #ffffff;
+  --accent-soft: #ddeaff;
+
+  --danger: #b3261e;
+  --danger-soft: #fbe9e7;
+  --warning: #8a5a00;
+  --warning-soft: #fff4d6;
+  --success: #1a7f37;
+
+  --field-turf: #ffffff;
+  --field-line: #9aa3ad;
+  --field-line-strong: #6d7681;
+  --field-hash: #6d7681;
+  --field-number: #7b838d;
+  --field-endzone: #f0f2f4;
+
+  --radius: 6px;
+  --radius-sm: 4px;
+  --shadow: 0 1px 2px rgba(16, 20, 26, 0.08), 0 4px 12px rgba(16, 20, 26, 0.06);
+
+  --panel-width: 264px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171b;
+    --bg-panel: #1b1f24;
+    --bg-raised: #22272e;
+    --bg-sunken: #101317;
+    --bg-canvas: #0d1013;
+
+    --fg: #e7eaee;
+    --fg-muted: #a4adb8;
+    --fg-faint: #79828d;
+
+    --border: #2d333b;
+    --border-strong: #444c56;
+
+    --accent: #4c8dff;
+    --accent-fg: #0b1220;
+    --accent-soft: #16304f;
+
+    --danger: #ff7b72;
+    --danger-soft: #3d1d1a;
+    --warning: #e3b341;
+    --warning-soft: #3a2d10;
+    --success: #56d364;
+
+    --field-turf: #1b1f24;
+    --field-line: #454d57;
+    --field-line-strong: #69727d;
+    --field-hash: #69727d;
+    --field-number: #59616b;
+    --field-endzone: #171b1f;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------------------------------------------------------------- layout - */
+
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  height: 100%;
+  overflow: hidden;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: var(--panel-width) 1fr var(--panel-width);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.panel--right {
+  border-right: none;
+  border-left: 1px solid var(--border);
+}
+
+.panel__scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+.section {
+  border-bottom: 1px solid var(--border);
+}
+
+.section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  position: sticky;
+  top: 0;
+  background: var(--bg-panel);
+  z-index: 2;
+}
+
+.section__title {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+.section__body {
+  padding: 4px 10px 12px;
+}
+
+/* --------------------------------------------------------------- toolbar - */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.toolbar__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-right: 4px;
+}
+
+.toolbar__wordmark {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.toolbar__title-input {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 3px 6px;
+  min-width: 140px;
+  font-weight: 600;
+}
+
+.toolbar__title-input:hover {
+  border-color: var(--border);
+}
+
+.toolbar__title-input:focus {
+  background: var(--bg-raised);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.toolbar__spacer {
+  flex: 1;
+}
+
+.toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: 6px;
+  margin-right: 2px;
+  border-right: 1px solid var(--border);
+}
+
+.toolbar__group:last-of-type {
+  border-right: none;
+}
+
+/* -------------------------------------------------------------- controls - */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 9px;
+  min-height: 27px;
+  background: var(--bg-raised);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--bg-sunken);
+  border-color: var(--border-strong);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent);
+  filter: brightness(1.08);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--bg-sunken);
+  border-color: var(--border);
+}
+
+.btn--danger {
+  color: var(--danger);
+}
+
+.btn--icon {
+  padding: 5px 7px;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn--active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--fg);
+}
+
+.btn--sm {
+  padding: 3px 7px;
+  min-height: 22px;
+  font-size: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 9px;
+}
+
+.field--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.field__label {
+  font-size: 11px;
+  color: var(--fg-muted);
+  font-weight: 550;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 4px 7px;
+  min-height: 27px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.input--number {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  max-width: 84px;
+}
+
+.input--color {
+  padding: 2px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.input--inline {
+  min-height: 22px;
+  padding: 2px 5px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 0;
+  cursor: pointer;
+}
+
+.checkbox input {
+  accent-color: var(--accent);
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.row--wrap {
+  flex-wrap: wrap;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.hint-inline {
+  color: var(--fg-faint);
+  font-size: 11px;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--fg-faint);
+  margin: 4px 0 0;
+}
+
+.empty {
+  padding: 16px 10px;
+  text-align: center;
+  color: var(--fg-faint);
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------- set list - */
+
+.set-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 6px 10px;
+}
+
+.set-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.set-item:hover {
+  background: var(--bg-sunken);
+}
+
+.set-item--current {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.set-item__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.set-item--current .set-item__label {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: transparent;
+}
+
+.set-item__meta {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.set-item__counts {
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-muted);
+  font-size: 12px;
+}
+
+.set-item__notes {
+  display: block;
+  font-size: 11px;
+  color: var(--fg-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------- roster - */
+
+.roster-section {
+  margin-bottom: 8px;
+}
+
+.roster-section__header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 2px;
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+.swatch--round {
+  border-radius: 50%;
+}
+
+.roster-section__name {
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.roster-section__count {
+  font-size: 11px;
+  color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.performer-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 2px 0 4px 19px;
+}
+
+.chip {
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.chip--selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 650;
+}
+
+.chip--unplaced {
+  border-style: dashed;
+  color: var(--fg-faint);
+}
+
+/* --------------------------------------------------------------- canvas - */
+
+.canvas-cell {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.canvas-cell > .canvas-host {
+  flex: 1;
+}
+
+.canvas-host {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  background: var(--bg-canvas);
+  overflow: hidden;
+}
+
+.canvas-host canvas {
+  display: block;
+}
+
+.canvas-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 3;
+}
+
+/*
+ * A badge pinned near the cursor while a drag or rotation is in flight. Pointer
+ * events are off so it can never intercept the gesture it is describing.
+ */
+.drag-badge {
+  position: absolute;
+  z-index: 5;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
+  border: 1px solid var(--accent);
+  box-shadow: var(--shadow);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  color: var(--fg);
+}
+
+.drag-badge--rotate {
+  font-weight: 650;
+}
+
+/* Which increment the turn is rounding to — quieter than the angle itself. */
+.drag-badge__step {
+  margin-left: 6px;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.canvas-host--grabbing {
+  cursor: grabbing;
+}
+
+.canvas-host--grabbing canvas {
+  cursor: grabbing;
+}
+
+.canvas-empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 460px;
+  padding: 18px 22px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  z-index: 4;
+}
+
+.canvas-empty h2 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.canvas-empty ol {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--fg-muted);
+}
+
+.canvas-empty li {
+  margin-bottom: 7px;
+}
+
+.canvas-empty li:last-child {
+  margin-bottom: 0;
+}
+
+/*
+ * Shown while the playhead sits between sets, where what you see is
+ * interpolated and nothing is editable.
+ */
+/*
+ * Sits beside the transport when the show expects a recording this browser no
+ * longer holds. A label, not a button: it wraps a hidden file input, so one
+ * click goes straight to the picker.
+ */
+.timeline__audio-warning {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--warning, #b58900);
+  background: color-mix(in srgb, var(--warning, #b58900) 12%, transparent);
+  color: var(--fg);
+  font-size: 11px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.timeline__audio-warning:hover {
+  background: color-mix(in srgb, var(--warning, #b58900) 22%, transparent);
+}
+
+.timeline__audio-warning--calm {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: default;
+}
+
+.canvas-playback-note {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
+  border: 1px solid var(--accent);
+  box-shadow: var(--shadow);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.canvas-badge {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  font-size: 11px;
+  color: var(--fg-muted);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ------------------------------------------------------------- timeline - */
+
+.timeline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+}
+
+.timeline__transport {
+  display: flex;
+  gap: 3px;
+}
+
+.timeline__track {
+  position: relative;
+  flex: 1;
+  height: 34px;
+  min-width: 120px;
+}
+
+.timeline__range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.timeline__rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 16px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.timeline__marker {
+  position: absolute;
+  top: 8px;
+  width: 2px;
+  height: 20px;
+  background: var(--border-strong);
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+
+.timeline__marker-label {
+  position: absolute;
+  top: -10px;
+  left: 3px;
+  font-size: 9px;
+  color: var(--fg-faint);
+  white-space: nowrap;
+}
+
+.timeline__playhead {
+  position: absolute;
+  top: 4px;
+  width: 2px;
+  height: 28px;
+  background: var(--accent);
+  transform: translateX(-1px);
+  pointer-events: none;
+  border-radius: 1px;
+}
+
+/*
+ * Fixed width, never shrinking, tabular figures. The track beside it is
+ * flexible, so any growth here would push the track and make the playhead
+ * appear to jitter sideways as the numbers change.
+ */
+.timeline__readout {
+  flex: 0 0 auto;
+  width: 196px;
+  font-size: 11px;
+  color: var(--fg-muted);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+}
+
+.timeline__readout-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.timeline__readout-label {
+  color: var(--fg-faint);
+}
+
+.timeline__readout-value {
+  font-family: var(--font-mono);
+  color: var(--fg);
+}
+
+/* ----------------------------------------------------------- status bar - */
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 12px;
+  background: var(--bg-sunken);
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--fg-muted);
+  min-height: 24px;
+}
+
+.status-bar__coord {
+  font-family: var(--font-mono);
+  color: var(--fg);
+}
+
+.status-bar__spacer {
+  flex: 1;
+}
+
+.status-bar__warning {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+.status-bar__dirty {
+  color: var(--fg-faint);
+}
+
+/* --------------------------------------------------------- context menu - */
+
+.context-menu {
+  position: fixed;
+  z-index: 60;
+  min-width: 268px;
+  max-width: 320px;
+  padding: 4px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.context-menu__header {
+  padding: 6px 9px;
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--fg-muted);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3px;
+}
+
+.context-menu__note {
+  display: block;
+  font-weight: 400;
+  color: var(--warning);
+  margin-top: 2px;
+}
+
+.context-menu__empty {
+  padding: 10px 9px;
+  font-size: 12px;
+  color: var(--fg-faint);
+}
+
+.context-menu__group + .context-menu__group {
+  border-top: 1px solid var(--border);
+  margin-top: 3px;
+  padding-top: 3px;
+}
+
+.context-menu__group-label {
+  padding: 5px 9px 3px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.context-menu__item {
+  display: block;
+  width: 100%;
+  padding: 5px 9px;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 12.5px;
+}
+
+.context-menu__item:hover:not(:disabled),
+.context-menu__item:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.context-menu__item:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.context-menu__hint {
+  display: block;
+  font-size: 10.5px;
+  color: var(--fg-faint);
+  margin-top: 1px;
+}
+
+.align-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px 0 6px 8px;
+}
+
+/* --------------------------------------------------------------- dialog - */
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 11, 15, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+}
+
+.dialog {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: min(560px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dialog--wide {
+  width: min(720px, 100%);
+}
+
+.dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dialog__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.dialog__body {
+  padding: 14px 16px;
+  overflow-y: auto;
+}
+
+.dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-raised);
+}
+
+/* --------------------------------------------------------------- alerts - */
+
+.alert {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.alert--error {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.alert--warning {
+  background: var(--warning-soft);
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.alert--info {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--fg);
+}
+
+.coordinate-readout {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 8px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.stride-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+}
+
+.stride-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.tab-row {
+  display: flex;
+  gap: 2px;
+  padding: 6px 8px 0;
+}
+
+.tab {
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--fg-muted);
+  font-size: 12px;
+}
+
+.tab--active {
+  background: var(--bg-raised);
+  border-color: var(--border);
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.waveform {
+  width: 100%;
+  height: 48px;
+  display: block;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.tempo-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+/*
+ * A file input hidden behind a styled <label>.
+ *
+ * Deliberately NOT `.visually-hidden`. That class puts the input at its static
+ * position inside the panel, and clicking the label focuses it — so the browser
+ * scrolls the nearest scrollable ancestor to bring a 1px input into view, which
+ * yanks the sidebar to the bottom before the file picker even opens.
+ *
+ * Fixed to the top-left corner of the viewport, the input is always already in
+ * view, so focusing it scrolls nothing. It stays in the accessibility tree and
+ * stays focusable — `display: none` would fix the scrolling too, but it would
+ * take the control off the keyboard, and the label is not focusable in its
+ * place.
+ */
+.file-input {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  /* Clicks belong to the label; label activation reaches the input regardless. */
+  pointer-events: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --panel-width: 220px;
+  }
+}
+
+@media (max-width: 860px) {
+  .workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(240px, 1fr) auto;
+  }
+
+  .panel {
+    max-height: 240px;
+    border-right: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .panel--right {
+    border-left: none;
+  }
+}
+
+/* ---------------------------------------------------------------- 3D view --
+ * The stadium playback view, in either of its homes: full screen over the
+ * editor, or a window of its own. Both use the same layout, so the styles are
+ * shared and only the outermost container differs.
+ */
+
+.stadium-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: #0b0f14;
+  display: flex;
+  flex-direction: column;
+}
+
+.stadium-fullscreen__notice {
+  margin: 8px 12px 0;
+}
+
+/* In a popped-out window this is the whole document body. */
+.popout-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0b0f14;
+}
+
+.stadium {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #0b0f14;
+  color: #f2f5f8;
+}
+
+.stadium__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stadium__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* The camera is dragged with the pointer; the browser's own pan and zoom
+     gestures would fight it on a trackpad or touchscreen. */
+  touch-action: none;
+  cursor: grab;
+}
+
+.stadium__canvas:active {
+  cursor: grabbing;
+}
+
+.stadium__loading,
+.stadium__failure {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  color: #f2f5f8;
+  background: #0b0f14;
+  font-size: 13px;
+}
+
+.stadium__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #121821;
+  border-top: 1px solid #22303f;
+}
+
+.stadium__scrub {
+  flex: 1;
+  min-width: 120px;
+}
+
+.stadium__readout {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.stadium__hint {
+  margin: 0;
+  padding: 6px 12px 10px;
+  background: #121821;
+  color: #8ea0b5;
+  font-size: 11px;
+}
+
+.stadium__hint kbd {
+  padding: 1px 5px;
+  border: 1px solid #33445a;
+  border-radius: 3px;
+  background: #1b2431;
+  font-family: inherit;
+  font-size: 10px;
+}
+
+/* --- the previous / current / next overlay --- */
+
+.set-overlay {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 8px;
+  width: min(760px, calc(100% - 32px));
+  padding: 10px 10px 14px;
+  border-radius: 10px;
+  /* Dark and translucent so it reads over bright turf without hiding it. */
+  background: rgba(9, 13, 18, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+
+.set-card {
+  padding: 6px 10px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.set-card--current {
+  background: rgba(88, 166, 255, 0.18);
+  border: 1px solid rgba(88, 166, 255, 0.5);
+}
+
+.set-card--empty {
+  opacity: 0.45;
+}
+
+.set-card__role {
+  font-size: 9px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.set-card__label {
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.set-card--current .set-card__label {
+  font-size: 22px;
+}
+
+.set-card__detail {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.set-card__muted {
+  opacity: 0.6;
+}
+
+.set-card__notes {
+  margin-top: 3px;
+  font-size: 10px;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+.set-overlay__progress {
+  grid-column: 1 / -1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+
+.set-overlay__progress span {
+  display: block;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: #58a6ff;
+}
+
+/*
+ * Where the music came from — the citation saved with the show.
+ *
+ * Collapsed by default when empty so the Music panel is not dominated by five
+ * fields most shows leave blank, and open whenever there is a citation to see.
+ */
+.audio-source {
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+}
+
+.audio-source > summary {
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--fg-muted);
+}
+
+.audio-source[open] > summary {
+  margin-bottom: 6px;
+}
+
+.audio-citation {
+  padding: 6px 8px;
+  border-left: 2px solid var(--accent);
+  background: var(--bg-panel);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 11px;
+  line-height: 1.5;
+  /* A URL has no spaces to break at and would otherwise widen the panel. */
+  overflow-wrap: anywhere;
+}
+
+/* --- About ---------------------------------------------------------------
+ * A narrow dialog: the content is a few short facts and three notes, and a
+ * full-width one would stretch them into unreadable lines.
+ */
+.dialog--narrow {
+  max-width: 460px;
+}
+
+.about__lede {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.about__facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  margin: 0 0 10px;
+  font-size: 12px;
+}
+
+.about__facts dt {
+  color: var(--fg-muted);
+}
+
+.about__facts dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.about__copyright {
+  margin: 0 0 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* --- Video export progress ------------------------------------------------
+ * Shown while a recording runs. The bar matters more than usual here: the
+ * export takes as long as the show, and without it the dialog looks hung.
+ */
+.video-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-muted);
+}
+
+.video-progress__bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.video-progress__bar span {
+  display: block;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: var(--accent);
+  transition: width 120ms linear;
+}
+
+/*
+ * The export dialog while a recording is running.
+ *
+ * Pinned to a corner with the backdrop made inert, so the show being recorded
+ * stays visible. A modal over the top would hide the very thing the user needs
+ * to check — and the check has to happen now, not when the file arrives.
+ */
+.dialog-backdrop--recording {
+  background: transparent;
+  align-items: flex-end;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.dialog-backdrop--recording .dialog {
+  pointer-events: auto;
+  max-width: 340px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* Only the essentials while it runs: progress, and a way to stop. */
+.dialog-backdrop--recording .field,
+.dialog-backdrop--recording .checkbox,
+.dialog-backdrop--recording .hint,
+.dialog-backdrop--recording .grid-2 {
+  display: none;
+}

@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Off for now so a stray unused import cannot block a build. Turn both on
+    // once CI is running (see README, "Known gaps").
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    // Relative imports carry their .ts/.tsx extension. Vite resolves them, and
+    // so does `node --experimental-strip-types`, which is what runs the tests
+    // without a build step.
+    "allowImportingTsExtensions": true,
+
+    // Required for both Vite's transpile-only pipeline and Node's type
+    // stripping: every type-only import must say `import type`.
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "types": ["vite/client", "node"]
+  },
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["dist", "node_modules"]
+}

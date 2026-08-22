@@ -1,0 +1,59 @@
+{
+  "name": "drillwriter-studio",
+  "version": "0.1.0",
+  "private": false,
+  "description": "DrillWriter Studio: browser-based marching band drill design — build formations set by set, align them to music, and export coordinate sheets and drill charts.",
+  "keywords": [
+    "marching-band",
+    "drill-design",
+    "drill-writer",
+    "music-education",
+    "field-show",
+    "pageantry",
+    "react",
+    "typescript"
+  ],
+  "license": "Apache-2.0",
+  "author": "Jasper Hamilton",
+  "homepage": "https://jhamilt-sw.github.io/DrillWriterStudio/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhamilt-sw/DrillWriterStudio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jhamilt-sw/DrillWriterStudio/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test \"src/**/*.test.ts\"",
+    "test:watch": "node --experimental-strip-types --test --watch \"src/**/*.test.ts\"",
+    "licenses": "node scripts/check-licenses.mjs",
+    "stamp": "node scripts/stamp-authorship.mjs",
+    "stamp:check": "node scripts/stamp-authorship.mjs --check"
+  },
+  "dependencies": {
+    "konva": "^9.3.16",
+    "pdf-lib": "^1.17.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-konva": "^18.2.10",
+    "three": "^0.169.0",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.169.0",
+    "@vitejs/plugin-react": "^4.3.3",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}
