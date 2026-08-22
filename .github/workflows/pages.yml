@@ -1,0 +1,56 @@
+# Build and publish to GitHub Pages.
+#
+# The app is a static bundle with no server and no secrets, so deployment is
+# just "build it and upload dist/". `vite.config.ts` sets `base: './'`, which is
+# what makes the build work from a project-site subdirectory
+# (username.github.io/repo) as well as from a user site or a local file share.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets you re-publish without pushing, from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; cancel an in-flight one if a newer commit lands.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      # The tests need no browser and no build step, so they are cheap enough
+      # to gate every deploy on.
+      - run: npm test
+      - run: npm run licenses
+      # A stale authorship stamp asserts something false about the file it sits
+      # in, so it fails the build rather than shipping.
+      - run: npm run stamp:check
+      # `build` runs `tsc --noEmit` first, so a type error stops the deploy.
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

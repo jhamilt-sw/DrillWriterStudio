@@ -151,6 +151,7 @@ test('step-size analysis reports the stride a move demands', () => {
     type: 'highSchool',
     stepsPerFiveYards: 8,
     showEndZones: true,
+    appearance: DEFAULT_APPEARANCE,
   });
   // 16 steps in 16 counts is exactly an 8-to-5 stride: 22.5 inches.
   const even = analyseSegment(
