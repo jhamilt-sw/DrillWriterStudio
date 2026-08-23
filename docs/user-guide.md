@@ -497,6 +497,13 @@ show file and appear in the 3D view too.
 
 ## When something looks wrong
 
+**I opened it on my phone and it told me to use a computer.** It did. Drill is
+written by dragging individual marchers, right-clicking to align them and
+reading a whole field at once, none of which a touchscreen does well. Look
+around by all means — but note that your work lives in whichever browser you
+started it in, so save the file and carry it across rather than expecting a show
+begun on a phone to be waiting on the laptop.
+
 **"Nobody is on the field."** New performers have no position until you give
 them one. Select them and press a formation tool — **Block** is the usual first
 move.

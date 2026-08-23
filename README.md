@@ -340,6 +340,13 @@ its drawing buffer leaves the on-screen layout alone.
 landscape chart per set, and a one-page show summary. All PDF, all generated
 in-browser.
 
+**Devices.** The editor asks for a precise pointer and a wide screen, so a
+touch device gets a one-time notice suggesting a computer — dismissible, since
+someone opening the link to look around should be able to. The check asks about
+the *primary pointer* and the viewport rather than sniffing the user agent: an
+iPad has claimed to be desktop Safari since iPadOS 13, and a touchscreen laptop
+would be insulted by the opposite mistake.
+
 **Persistence.** Save and reopen `.drillshow` files — real Save/Save As on
 Chrome and Edge, download/upload elsewhere. Autosave to IndexedDB every 30
 seconds, with a recovery prompt if a tab dies.

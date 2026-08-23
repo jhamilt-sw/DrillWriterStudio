@@ -17,10 +17,12 @@ import { resolveSetPositions, totalCounts } from './core/show.ts';
 import { useShowStore } from './state/showStore.ts';
 import { FieldCanvas } from './ui/canvas/FieldCanvas.tsx';
 import { AboutDialog } from './ui/dialogs/AboutDialog.tsx';
+import { DeviceNoticeDialog } from './ui/dialogs/DeviceNoticeDialog.tsx';
 import { ExportDialog } from './ui/dialogs/ExportDialog.tsx';
 import { VideoExportDialog } from './ui/dialogs/VideoExportDialog.tsx';
 import { ShowSettingsDialog } from './ui/dialogs/ShowSettingsDialog.tsx';
 import { useAutosave } from './ui/hooks/useAutosave.ts';
+import { useDeviceNotice } from './ui/hooks/useDeviceNotice.ts';
 import { useKeyboardShortcuts } from './ui/hooks/useKeyboardShortcuts.ts';
 import { useShowFile } from './ui/hooks/useShowFile.ts';
 import { PlaybackWindow, type PlaybackMode } from './ui/playback3d/PlaybackWindow.tsx';
@@ -48,6 +50,7 @@ function Editor() {
   const file = useShowFile();
   const audio = useAudio();
   const { recovered, dismissRecovery, lastAutosaveAt } = useAutosave();
+  const device = useDeviceNotice();
 
   const [showExport, setShowExport] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -171,6 +174,14 @@ function Editor() {
       {showExport && <ExportDialog onClose={() => setShowExport(false)} />}
       {showSettings && <ShowSettingsDialog onClose={() => setShowSettings(false)} />}
       {showAbout && <AboutDialog onClose={() => setShowAbout(false)} />}
+
+      {/*
+        Shown before anything else a user might click, but after the app has
+        rendered behind it — so they can see what they are being told about.
+      */}
+      {device.open && (
+        <DeviceNoticeDialog concern={device.concern} onDismiss={device.dismiss} />
+      )}
       {showVideo && (
         <VideoExportDialog
           onClose={() => setShowVideo(false)}
